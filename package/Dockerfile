@@ -6,9 +6,9 @@ WORKDIR /var/lib/kustomize
 
 ARG KUSTOMIZE_BRANCH=master
 
-RUN git clone -b ${KUSTOMIZE_BRANCH} --single-branch https://github.com/kubernetes-sigs/kustomize /usr/lib/kustomize
+RUN git clone -b ${KUSTOMIZE_BRANCH} --single-branch https://github.com/kubernetes-sigs/kustomize /usr/lib/kustomize &&\
+    rm -v !("kustomize") && \
+    mv -v /var/lib/kustomize/kustomize/* /var/lib/kustomize/
 
 COPY run.sh /run.sh
-
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+CMD /run.sh $KUSTOMIZE_ARGS
